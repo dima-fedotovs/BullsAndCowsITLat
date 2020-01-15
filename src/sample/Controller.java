@@ -57,6 +57,26 @@ public class Controller {
         return result;
     }
 
+    public void countBullsAndCows(List<Integer> userNums, Turn turn) {
+        int bulls = 0;
+        int cows = 0;
+        for (int i = 0; i < NUM_COUNT; i++) {
+            int myNum = myNums.get(i);
+            for (int j = 0; j < NUM_COUNT; j++) {
+                int userNum = userNums.get(j);
+                if (myNum == userNum) {
+                    if (i == j) {
+                        bulls++;
+                    } else {
+                        cows++;
+                    }
+                }
+            }
+        }
+        turn.setBulls(bulls);
+        turn.setCows(cows);
+    }
+
     public void doTurn() {
         turnCounter++;
 
@@ -67,14 +87,11 @@ public class Controller {
         var guess = String.format("%d %d %d %d", n1, n2, n3, n4);
 
         var userNums = List.of(n1, n2, n3, n4);
-        var bulls = countBulls(userNums);
-        var cows = countCows(userNums);
 
         var turn = new Turn();
         turn.setUserGuess(guess);
         turn.setTurnNr(turnCounter);
-        turn.setBulls(bulls);
-        turn.setCows(cows);
+        countBullsAndCows(userNums, turn);
 
         turnList.getItems().add(0, turn);
         turnList.sort();
