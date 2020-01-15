@@ -15,7 +15,7 @@
             <Spinner fx:id="userNum2" initialValue="5" min="0" max="9"/>
             <Spinner fx:id="userNum3" initialValue="5" min="0" max="9"/>
             <Spinner fx:id="userNum4" initialValue="5" min="0" max="9"/>
-            <Button text="Go" onAction="#doTurn" minWidth="100"/>
+            <Button fx:id="turnButton" text="Go" onAction="#doTurn" minWidth="100"/>
         </HBox>
     </top>
     <center>

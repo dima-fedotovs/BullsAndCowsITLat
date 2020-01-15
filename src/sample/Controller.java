@@ -1,11 +1,11 @@
 package sample;
 
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public class Controller {
@@ -16,10 +16,27 @@ public class Controller {
     public Spinner<Integer> userNum3;
     public Spinner<Integer> userNum4;
     public TableView<Turn> turnList;
+    public Button turnButton;
     private int turnCounter;
     private List<Integer> myNums = new ArrayList<>();
 
     public void initialize() {
+        turnButton.disableProperty().bind(
+                Bindings.createBooleanBinding(() -> {
+                            var set = new HashSet<Integer>();
+                            set.add(userNum1.getValue());
+                            set.add(userNum2.getValue());
+                            set.add(userNum3.getValue());
+                            set.add(userNum4.getValue());
+                            return set.size() < NUM_COUNT;
+                        },
+                        userNum1.valueProperty(),
+                        userNum2.valueProperty(),
+                        userNum3.valueProperty(),
+                        userNum4.valueProperty()
+                )
+        );
+
         var random = new Random();
         while (myNums.size() < NUM_COUNT) {
             var num = random.nextInt(NUM_BOUND);
