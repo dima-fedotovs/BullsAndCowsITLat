@@ -6,6 +6,7 @@ import javafx.scene.control.TableView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class Controller {
     public static final int NUM_COUNT = 4;
@@ -57,7 +58,8 @@ public class Controller {
         return result;
     }
 
-    public void countBullsAndCows(List<Integer> userNums, Turn turn) {
+    public void countBullsAndCows(List<Integer> userNums,
+                                  BiConsumer<Integer, Integer> resultConsumer) {
         int bulls = 0;
         int cows = 0;
         for (int i = 0; i < NUM_COUNT; i++) {
@@ -73,8 +75,7 @@ public class Controller {
                 }
             }
         }
-        turn.setBulls(bulls);
-        turn.setCows(cows);
+        resultConsumer.accept(bulls, cows);
     }
 
     public void doTurn() {
@@ -91,7 +92,10 @@ public class Controller {
         var turn = new Turn();
         turn.setUserGuess(guess);
         turn.setTurnNr(turnCounter);
-        countBullsAndCows(userNums, turn);
+        countBullsAndCows(userNums, (b, c) -> {
+            turn.setBulls(b);
+            turn.setCows(c);
+        });
 
         turnList.getItems().add(0, turn);
         turnList.sort();
